@@ -35,10 +35,10 @@ RUN a2enmod rewrite
 WORKDIR /var/www/html
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
 RUN npm install && npm run build
 
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 755 storage bootstrap/cache
 
-CMD ["bash", "-c", "php artisan key:generate --no-interaction; php artisan storage:link; php artisan migrate --force; php artisan db:seed --force; apache2-foreground"]
+CMD ["bash", "-c", "php artisan key:generate --no-interaction; php artisan package:discover --ansi; php artisan storage:link; php artisan migrate --force; php artisan db:seed --force; apache2-foreground"]
