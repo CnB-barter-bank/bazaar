@@ -1,8 +1,27 @@
 FROM php:8.2-apache
 
 RUN apt-get update && apt-get install -y \
-    pkg-config libzip-dev git unzip nodejs npm \
-    && docker-php-ext-install mysqli pdo_mysql zip
+    pkg-config \
+    libzip-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libonig-dev \
+    libxml2-dev \
+    git \
+    unzip \
+    nodejs \
+    npm \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install \
+        mysqli \
+        pdo_mysql \
+        zip \
+        gd \
+        bcmath \
+        exif \
+        mbstring \
+        xml
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
