@@ -2,11 +2,10 @@ name: bazaar
 services:
     app:
         build:
-            context: ./docker
+            context: .
+            dockerfile: docker/Dockerfile
         ports:
           - "${APP_PORT:-8080}:80"
-        volumes:
-            - .:/var/www/html
 
     mysql:
         image: mysql:8
