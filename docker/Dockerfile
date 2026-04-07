@@ -38,12 +38,7 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
 RUN npm install && npm run build
 
-CMD ["bash", "-c", \
-    "mkdir -p storage/logs storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache && \
-    chown -R www-data:www-data storage bootstrap/cache && \
-    chmod -R 775 storage bootstrap/cache && \
-    php artisan key:generate --no-interaction && \
-    php artisan package:discover --ansi && \
-    php artisan storage:link && \
-    php artisan migrate --force && \
-    apache2-foreground"]
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+CMD ["/entrypoint.sh"]
